@@ -1,0 +1,51 @@
+Subject: Quick GitHub Copilot Skills Check (2-3 min)
+
+Hi everyone,
+
+Before class, please reply with your answers to the questions below so I can tailor the session to your level.
+
+1. Which IDE do you mainly use with Copilot?
+   - Visual Studio
+   - VS Code
+   - Both
+   - Other: _______
+
+2. Which Copilot features do you use today? (select all that apply)
+   - Inline completions
+   - Ask/Chat mode
+   - Agent mode
+   - PR/commit support
+   - I rarely use Copilot
+
+3. How often do you use Copilot?
+   - Daily
+   - Weekly
+   - Monthly
+   - Rarely
+
+4. Have you taken a Copilot class before?
+   - Yes
+   - No
+
+5. How would you rate your current Copilot skill level?
+   - Beginner
+   - Intermediate
+   - Advanced
+
+6. What do you want most from this class? (pick top 2)
+   - Better prompting
+   - Debugging help
+   - Test generation
+   - Refactoring
+   - Secure/reliable AI-assisted coding
+   - Agent workflows
+
+7. What is your biggest Copilot pain point right now?
+   - (one sentence)
+
+8. What class depth do you prefer?
+   - Mostly fundamentals
+   - Mix of fundamentals + advanced
+   - Mostly advanced
+
+Thanks! This will help me make the session as useful as possible for everyone.
