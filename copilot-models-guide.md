@@ -239,7 +239,7 @@ These cost three premium requests per use. Reserve them for the hardest problems
 
 | Task | Recommended model | Cost |
 |---|---|---|
-| Quick code completion / boilerplate | GPT-4.1 or GPT-5 mini | FREE |
+| Quick code completion / boilerplate | GPT-4.1 or GPT-5 mini | `0x` |
 | Everyday coding questions | GPT-5.3-Codex | `1x` |
 | Fast lightweight help, many small tasks | Claude Haiku 4.5 | `0.33x` |
 | Codebase exploration in Agent mode | GPT-5.4 mini | `0.33x` |
@@ -248,7 +248,7 @@ These cost three premium requests per use. Reserve them for the hardest problems
 | Agentic multi-step development | GPT-5.2-Codex or GPT-5.3-Codex | `1x` |
 | Edit-then-test iterative loops | Gemini 3.1 Pro | `1x` |
 | Architecture + hardest problems | Claude Opus 4.6 | `3x` |
-| Not sure what to pick | Auto (10% discount) | varies |
+| Not sure what to pick | Auto (10% discount) | `varies` |
 
 ---
 
