@@ -248,7 +248,7 @@ These cost three premium requests per use. Reserve them for the hardest problems
 | Agentic multi-step development | GPT-5.2-Codex or GPT-5.3-Codex | `1x` |
 | Edit-then-test iterative loops | Gemini 3.1 Pro | `1x` |
 | Architecture + hardest problems | Claude Opus 4.6 | `3x` |
-| Not sure what to pick | Auto (10% discount) | Varies |
+| Not sure what to pick | Auto (10% discount) | varies |
 
 ---
 
