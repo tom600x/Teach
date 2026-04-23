@@ -154,6 +154,8 @@ Elevation communicates visual hierarchy and focus through shadow depth.
 
 **Library:** [Remix Icons](https://remixicon.com/) (accessible to Commonwealth network users)
 
+**PA.gov icon catalog:** [https://wcmauthorguide.pa.gov/en/style-guide/icons.html](https://wcmauthorguide.pa.gov/en/style-guide/icons.html) — Browse all available `ri-*` class names organized by category (Arrows, Buildings, Business, Communication, Design, Development, Device, Document, Editor, Finance, Food, Health & Medical, Logos, Map, Media, System, User & Faces, Weather, Others). Use this catalog to select icon class names when generating code.
+
 **Rules:**
 - One icon = one consistent meaning throughout the entire site. Do not reuse the same icon for different concepts.
 - Always pair icons with text unless the meaning is universally understood.
@@ -462,6 +464,10 @@ A structured grid of rows and columns for presenting data.
 - Every table needs a clear descriptive header (caption or heading above the table) for context.
 - Column and row labels must be brief and in plain language.
 - For large datasets, split into multiple smaller tables with clear headings rather than one overwhelming table.
+- Tables with more than one page of records must include **pagination controls**: previous/next buttons and page number indicators.
+- Paginated tables must include a **records-per-page selector** (a Drop-Down Select) allowing users to choose how many rows to display (e.g., 10, 25, 50). Place it above or below the table, clearly labeled (e.g., "Rows per page").
+- The current page and total page/record count must be visible (e.g., "Showing 1–25 of 143 results").
+- Pagination controls must be keyboard-accessible and announced to screen readers (use `aria-label` on navigation buttons; update a live region or page heading when the page changes).
 
 ---
 
@@ -560,6 +566,163 @@ A single-line text field for collecting short text responses.
 | Link | Tab to focus, Enter to activate | Descriptive link text; `aria-label` if text is ambiguous |
 | Radio Button | Tab to first option, arrow keys to move, Space to select | Fieldset + legend; `aria-checked` |
 | Text Input | Tab to focus | Associated `<label>`, `aria-describedby` for help/error text |
+
+---
+
+## Data Application UI Patterns
+
+Use these patterns when building government line-of-business applications: data entry forms, workflow processing screens, and data management grids. All patterns use KDS components and tokens only — no custom components.
+
+---
+
+### Page Layout for Data Applications
+
+Government data apps typically follow a three-zone structure. Use KDS grid columns at each breakpoint.
+
+```
+┌──────────────────────────────────────────────────┐
+│  Header (required — KDS Header component)        │
+├──────────────────────────────────────────────────┤
+│  Page title + action bar (H1 + Primary button)   │
+├──────────────────────────────────────────────────┤
+│  Search / filter bar  │  (optional side panel)   │
+├──────────────────────────────────────────────────┤
+│  Data table / content area                       │
+├──────────────────────────────────────────────────┤
+│  Footer (required — KDS Footer component)        │
+└──────────────────────────────────────────────────┘
+```
+
+**Rules:**
+- Place the page H1 and the single Primary action button ("Add record", "Submit application") at the top of the content area — not inside the table.
+- Keep the search/filter bar visually separated from the table (use spacing tokens, not a visible divider line).
+- Never put the Header or Footer inside a CSS grid content column — they span full width.
+- On XS/Small breakpoints, collapse side panels below the main content area; do not use horizontal scroll.
+
+---
+
+### Data Entry Forms
+
+**KDS requirements for forms:**
+- Every field must use a KDS form component (Text Input, Drop-Down Select, Checkbox, Radio Button).
+- Every field must have an associated `<label>` rendered via the KDS label pattern.
+- Error states must use the KDS component error variant (not custom styling).
+- Action buttons must use KDS Button variants.
+
+**Usability recommendations (not KDS rules):**
+- **Prefer a single-column vertical layout** (one field per row). Multi-column form layouts increase error rates and are harder to scan — this is a well-established usability finding (Nielsen Norman Group, GOV.UK, USWDS), not a KDS mandate. Multi-column is acceptable when fields are short and logically paired (e.g., First name / Last name, City / State / Zip).
+- On narrow viewports, always collapse to a single column regardless of the desktop layout.
+
+**Field grouping:**
+- Group related fields under a `<fieldset>` with a concise `<legend>` (e.g., "Contact information", "Address details").
+- Separate groups with vertical spacing tokens, not ruled lines.
+- Long forms (more than ~7 fields) should be broken into logical sections using H2/H3 subheadings or multi-step workflow (one section per step).
+
+**Label and help text:**
+- Every field must have a visible `<label>`. Never rely on placeholder text alone.
+- Mark required fields with an asterisk (*) and include a note above the form: "Fields marked * are required."
+- Place help text below the label, above the input, using the KDS help text pattern with `aria-describedby`.
+
+**Validation:**
+- Validate on submit first; then validate inline on blur for individual fields after the first failed submit.
+- Show a KDS In-Page Alert (error variant) at the top of the form listing all errors — in addition to inline field-level error messages.
+- Never clear a field's value when showing an error. Preserve what the user typed.
+- Use `aria-invalid="true"` and link error messages via `aria-describedby` on every field in error.
+
+**Action buttons (form footer):**
+- Primary button = the submit/save action ("Submit application", "Save record"). One per form.
+- Secondary button = the cancel/back action ("Cancel", "Back"). Always paired with Primary.
+- Destructive actions ("Delete", "Discard") use Ghost button variant. Separate from the primary action group with spacing; do not place adjacent to Submit.
+- Never disable a Submit button to prevent submission — show validation errors instead. Disabled buttons have no accessible error feedback.
+
+---
+
+### Data Tables with CRUD Actions
+
+#### Table Toolbar (above the table)
+
+Place a toolbar row between the page title and the table containing:
+1. **Search input** — Text Input labelled "Search [record type]" (e.g., "Search applications"). Triggers filtering.
+2. **Filter controls** — Drop-Down Select components for filterable columns (status, date range, category). Label each clearly.
+3. **Add button** — Primary button: "Add [record type]" (e.g., "Add application"). Only one per table view.
+4. **Records-per-page selector** — Drop-Down Select labelled "Rows per page" with options 10 / 25 / 50.
+
+On XS/Small breakpoints, stack toolbar controls vertically. The Add button remains at the top.
+
+#### Table Column Structure
+
+- **First column:** The primary identifier for the record (name, ID, reference number). This value becomes the link for the View/detail action.
+- **Middle columns:** Key status and date fields relevant to the workflow. Keep to 4–6 columns maximum for readability.
+- **Last column:** An "Actions" column containing row-level action controls (see below).
+
+#### Row-Level Actions
+
+Use Ghost buttons for all row-level actions to avoid visual noise from repeated Primary/Secondary buttons:
+
+| Action | Control | Label |
+|---|---|---|
+| View | Ghost button or linked record identifier | "View" / use record name as link |
+| Edit | Ghost button | "Edit" |
+| Delete | Ghost button | "Delete" |
+
+**Rules:**
+- When all three actions are present, order them: View → Edit → Delete.
+- Separate "Delete" visually or with a divider character (\|) when displayed inline with View/Edit — it is destructive and should not be accidentally activated.
+- **Always require confirmation before deleting.** Show a modal-style In-Page Alert or a dedicated confirmation page — never delete on a single click.
+- For icon-only action buttons (space-constrained views), use the KDS Icon button variant with `aria-label` ("View record", "Edit record", "Delete record"). Pair with a visible tooltip if possible.
+- When a row is in a state where an action is not available (e.g., a submitted record cannot be edited), omit the button entirely — do not render it as disabled.
+
+#### Empty State
+
+When the table has no records (new dataset, or search returns no results), replace the table body with a plain-language message:
+
+```html
+<p>No [record type] found. <a href="/add">Add the first [record type]</a>.</p>
+```
+
+Do not show an empty table shell with zero rows.
+
+#### Table Status Indicators
+
+Use KDS Tags (read-only variant) in status columns to show record state (e.g., Pending, Approved, Rejected, Under Review). Follow these rules:
+- Never rely on tag color alone — the label text must communicate the status.
+- Use a consistent, documented set of status values. Do not invent ad-hoc statuses per screen.
+- Limit status tags to one per row in most cases; two maximum.
+
+---
+
+### Workflow / Status Screens
+
+When a record moves through a multi-step process (submitted → under review → approved/rejected):
+
+- Show the current status prominently near the page H1 using a Tag (read-only) or KDS In-Page Alert (info variant for neutral states).
+- If workflow steps are linear, show a step indicator above the content area listing the steps and marking the current one (can be implemented as a styled ordered list using KDS tokens — no custom component needed).
+- Workflow action buttons ("Approve", "Return for correction", "Reject") follow the same Button rules: one Primary per section, destructive actions (Reject) as Ghost with confirmation.
+- Place workflow actions at the bottom of the record detail view, after all the data fields, so users read the record before acting.
+
+---
+
+### Detail / View Record Screen
+
+When a user selects a record to view:
+
+- Display fields in a definition-list (`<dl>` / `<dt>` / `<dd>`) or a two-column label/value layout using KDS grid columns — not a table.
+- Labels (`<dt>`) use Label Medium style (Plus Jakarta Sans, 12px). Values (`<dd>`) use Body Medium.
+- Group fields under the same `<fieldset>`/section structure used on the entry form so the layout feels consistent.
+- Place Edit and Back buttons at the bottom. "Edit" = Secondary button (it leads to a new action, not the primary reason for this screen). "Back to list" = Ghost button or a Standalone Link.
+- Show a read-only status Tag near the H1.
+
+---
+
+### General Data Application Rules
+
+- **Scannable tables over dense forms:** Display data in a table first; only expand to a full form view when the user explicitly chooses View or Edit.
+- **Preserve filter and pagination state** when the user returns from a detail view — use URL query parameters or session state so users are not reset to page 1.
+- **Confirm destructive actions** — always. Use clear language: "Are you sure you want to delete [record name]? This cannot be undone."
+- **Show success feedback** after save/submit/delete using a KDS In-Page Alert (success variant) at the top of the resulting page or list view. Auto-dismiss after 5 seconds if non-critical.
+- **Empty required fields** — flag them on submit with the KDS Text Input error variant + In-Page Alert summary. Do not silently fail.
+- **Loading states** — if a data fetch takes more than 300ms, show a loading indicator and disable action buttons to prevent duplicate submissions. Use `aria-busy="true"` on the loading region.
+- **No inline editing** — do not make table cells directly editable. Link to a dedicated edit form. Inline editing is inaccessible and violates KDS form field patterns.
 
 ---
 
