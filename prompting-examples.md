@@ -55,4 +55,3 @@ Now Copilot matches your exact naming convention, `ViewBag` usage, shared view n
 | One-shot | 1 example | Matches one pattern | You have a style to follow |
 | Few-shot | 2+ examples | Highly consistent | Establishing a convention across many files |
 
-The more examples you give, the more Copilot can infer **your** conventions vs. generic defaults — especially useful in Lab 02 (Chat Mode) and Lab 03 (Agent Mode) where richer context is available.
