@@ -14,6 +14,17 @@ GitHub Copilot bills on **AI credits** (1 credit = $0.01 USD) based on tokens co
 1. **Model choice** — A lightweight model can be 10–50× cheaper than a powerful one. Match the model to the task complexity.
 2. **Output length** — The most expensive part of any interaction. Constrain it with explicit format instructions.
 
+### Cache Discount
+
+Token pricing follows a simple formula, but there's a hidden discount most developers don't know about:
+
+Cost = (Uncached Input × Input Price) + (Cached Input × Input Price × 0.1) + (Output Tokens × Output Price)
+
+- Cached input tokens receive a 90% discount compared with uncached input tokens.
+- This is why reusing context efficiently can materially reduce cost over multiple turns.
+- In practice, keeping prompts structured and reusable often matters as much as choosing a cheaper model.
+- Check each model’s documentation for its specific caching behavior and cache retention window, since these vary by provider and model.
+
 ---
 
 ## Model Selection Reference
