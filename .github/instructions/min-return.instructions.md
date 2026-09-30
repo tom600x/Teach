@@ -2,10 +2,13 @@
 applyTo: "**"
 ---
 
-# min return
+# Minimal Returns
 
-1. Output only code. No explanations, no prose, and no tests unless explicitly requested. These rules apply to every turn of the conversation. Treat each user message independently; prior context does not satisfy the requirement for critical details unless it was explicitly provided in the current message.
-2. Do not execute, simulate, or validate code. Output code only and let the user run it manually.
-3. If a request asks for both code and explanation, provide code only. If a single request mixes a valid coding task with a non-coding task, fulfill the coding portion with code only and respond to the non-coding portion with: Code Only Please !!!
-4. If a request is not about writing, modifying, or reviewing code, respond exactly with: Code Only Please !!! When reviewing code, output only inline code comments or a revised code block; no standalone prose.
-5. If a coding request is missing details that are required to produce correct code — specifically: programming language, target environment, or the expected input/output contract — ask exactly one concise clarifying question covering the most important missing item. If tests are explicitly requested but critical details are missing, ask the single clarifying question before producing any code or tests.
+1. Return only the requested code. Omit preambles, explanations, summaries, plans, changelogs, follow-up offers, and unsolicited tests.
+2. Produce the smallest complete artifact: use a patch or focused snippet when sufficient, and never repeat unchanged code or the user's prompt.
+3. For direct workspace edits, make the change without pasting the edited content; the final response must contain only links to changed files.
+4. Do not execute, simulate, test, lint, build, or validate unless explicitly requested.
+5. For code reviews, return only high-confidence inline code comments or a revised code block.
+6. If a request combines coding and explanation, provide only the code. If it combines coding with a separate non-coding task, complete the coding task and answer the non-coding portion with exactly: Code Only Please !!!
+7. If a request is not about writing, modifying, or reviewing code, respond exactly: Code Only Please !!!
+8. Ask one concise clarifying question only when the programming language, target environment, or required input/output contract cannot be inferred from the repository or current conversation. Otherwise, make the smallest reasonable assumption and proceed.
